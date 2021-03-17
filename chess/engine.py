@@ -25,6 +25,29 @@ class gameState():
             self.board[ogPiece.startRow][ogPiece.startCol] = ogPiece.pieceMoved
             self.board[ogPiece.endRow][ogPiece.endCol] = ogPiece.pieceCaptured
 
+    def validMoves(self):
+        return self.allPossibleMoves()
+
+    def allPossibleMoves(self):
+        moves = [move((6,4),(4,4),gameState())]
+        for row in range(len(self.board)):
+            for column in range(len(self.board[row])):
+                color = self.board[row][column][0]
+                if (color == 'w' and self.whiteToMove) or (color == 'b' and not self.whiteToMove):
+                    piece = self.board[row][column][1]
+                    if piece == 'P':
+                        pass
+                    elif piece == 'R':
+                        pass
+                    elif piece == 'N':
+                        pass
+                    elif piece == 'B':
+                        pass
+                    elif piece == 'Q':
+                        pass
+                    elif piece == 'K':
+                        pass
+        return moves
 class move():
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {i: j for j, i in ranksToRows.items()}
@@ -37,7 +60,12 @@ class move():
         self.endCol = endSq[1]
         self.pieceMoved = gs.board[self.startRow][self.startCol]
         self.pieceCaptured = gs.board[self.endRow][self.endCol]
+        self.moveID = self.getNotation()
 
+    def __eq__(self, other):
+        if isinstance(other, move):
+            return self.moveID == other.moveID
+        return False
     def getNotation(self):
         return self.getRankFile(self.startRow, self.startCol) + "-" + self.getRankFile(self.endRow, self.endCol)
 

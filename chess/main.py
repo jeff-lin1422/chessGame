@@ -26,7 +26,8 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = engine.gameState()
-    print(gs.board)
+    validMoves = gs.validMoves() # gets all valid moves of the current player
+    moveMade = False # change to true whenever switch turns because constantly running validMoves is inefficient
     loadImages()
     sqSelected = ()  # a tuple of row,column where the user clicked
     playerSelected = []  # 2 tuples, one for the beginning place, other for where the piece go
@@ -53,7 +54,9 @@ def main():
                     # if it's not legal moves, delete playerSelected[1] and continue this statement
                     move = engine.move(playerSelected[0], playerSelected[1], gs)
                     print(move.getNotation())
-                    gs.makeMove(move)
+                    if move in validMoves:
+                        gs.makeMove(move)
+                        moveMade = True
                     # reset after making a move
                     sqSelected = ()
                     playerSelected = []
@@ -62,6 +65,11 @@ def main():
             elif event.type == p.KEYDOWN:
                 if event.key == p.K_0:
                     gs.undoMove()
+                    validMoves = gs.validMoves()
+                    moveMade = True
+        if moveMade:
+            validMoves = gs.validMoves()
+            moveMade = False
         drawGameState(screen, gs)
         clock.tick(FPS)
         p.display.flip()
