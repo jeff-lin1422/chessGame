@@ -19,6 +19,12 @@ class gameState():
         self.moveLog.append(move)
         self.whiteToMove = not self.whiteToMove  # swap players
 
+    def undoMove(self):
+        if len(self.moveLog) != 0:
+            ogPiece = self.moveLog.pop()
+            self.board[ogPiece.startRow][ogPiece.startCol] = ogPiece.pieceMoved
+            self.board[ogPiece.endRow][ogPiece.endCol] = ogPiece.pieceCaptured
+
 class move():
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {i: j for j, i in ranksToRows.items()}

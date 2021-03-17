@@ -50,6 +50,7 @@ def main():
                         playerSelected = []
                         sqSelected = ()
                 if len(playerSelected) == 2:
+                    # if it's not legal moves, delete playerSelected[1] and continue this statement
                     move = engine.move(playerSelected[0], playerSelected[1], gs)
                     print(move.getNotation())
                     gs.makeMove(move)
@@ -58,6 +59,9 @@ def main():
                     playerSelected = []
                     # move the piece to the second square
                     # the clear the selected squares
+            elif event.type == p.KEYDOWN:
+                if event.key == p.K_0:
+                    gs.undoMove()
         drawGameState(screen, gs)
         clock.tick(FPS)
         p.display.flip()
@@ -85,6 +89,7 @@ def drawPieces(screen, gs):
             if piece != "--":
                 screen.blit(IMAGES[piece], p.Rect(column * SQUARESIZE, row * SQUARESIZE, SQUARESIZE, SQUARESIZE))
 
-
+# this ensures that main will run only if you are running this program
+# if you call this program in another program, main will not run
 if __name__ == "__main__":
     main()
