@@ -3,10 +3,10 @@ class gameState():
         #a 2d array representing the board
         self.board = [["bR","bN","bB","bQ","bK","bB","bN","bR"],
                       ["bP","bP","bP","bP","bP","bP","bP","bP"],
+                      ["--","--","--","--","--","--","--","bR"],
                       ["--","--","--","--","--","--","--","--"],
                       ["--","--","--","--","--","--","--","--"],
-                      ["--","--","--","--","--","--","--","--"],
-                      ["--","--","--","--","--","--","--","--"],
+                      ["wR","--","--","--","--","--","--","--"],
                       ["wP","wP","wP","wP","wP","wP","wP","wP"],
                       ["wR","wN","wB","wQ","wK","wB","wN","wR"],
         ]
@@ -72,8 +72,92 @@ class gameState():
                 if self.board[row+1][column+1][0] == 'w':
                     self.moves.append(move((row, column), (row+1, column+1), gameState()))
                 # do en passant
+    def getStraightMove(self, row, column, length):
+        if self.whiteToMove:
+            # going up
+            i = row + 1
+            while i <= length:
+                if self.board[i][column][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (i, column), gameState()))
+                    if self.board[i][column][0] == 'b':
+                        break
+                i += 1
+            # going down
+            i = row - 1
+            while i >= 0:
+                if self.board[i][column][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (i, column), gameState()))
+                    if self.board[i][column][0] == 'b':
+                        break
+                i -= 1
+            # going right
+            i = column + 1
+            while i <= length:
+                if self.board[row][i][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (row, i), gameState()))
+                    if self.board[row][i][0] == 'b':
+                        break
+                i += 1
+            # going left
+            i = column - 1
+            while i >= 0:
+                if self.board[row][i][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (row, i), gameState()))
+                    if self.board[row][i][0] == 'b':
+                        break
+                i -= 1
+        else:
+            # going up
+            i = row + 1
+            while i <= length:
+                if self.board[i][column][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (i, column), gameState()))
+                    if self.board[i][column][0] == 'w':
+                        break
+                i += 1
+            # going down
+            i = row - 1
+            while i >= 0:
+                if self.board[i][column][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (i, column), gameState()))
+                    if self.board[i][column][0] == 'w':
+                        break
+                i -= 1
+            # going right
+            i = column + 1
+            while i <= length:
+                if self.board[row][i][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (row, i), gameState()))
+                    if self.board[row][i][0] == 'w':
+                        break
+                i += 1
+            # going left
+            i = column - 1
+            while i >= 0:
+                if self.board[row][i][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (row, i), gameState()))
+                    if self.board[row][i][0] == 'w':
+                        break
+                i -= 1
     def getRookMove(self, row, column):
-        pass
+        self.getStraightMove(row, column, len(self.board)-1)
+
     def getKnightMove(self, row, column):
         pass
     def getBishopMove(self, row, column):
