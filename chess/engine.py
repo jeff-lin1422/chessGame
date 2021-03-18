@@ -4,8 +4,8 @@ class gameState():
         self.board = [["bR","bN","bB","bQ","bK","bB","bN","bR"],
                       ["bP","bP","bP","bP","bP","bP","bP","bP"],
                       ["--","--","--","--","--","--","--","bR"],
-                      ["--","--","--","--","--","--","--","--"],
-                      ["--","--","wB","--","--","--","--","--"],
+                      ["--","--","--","--","--","bB","--","--"],
+                      ["--","--","wB","bQ","wQ","--","--","--"],
                       ["wR","--","--","--","--","--","--","--"],
                       ["wP","wP","wP","wP","wP","wP","wP","wP"],
                       ["wR","wN","wB","wQ","wK","wB","wN","wR"],
@@ -213,10 +213,62 @@ class gameState():
                         break
                 i += 1
                 tS -= 1
+        else:
+            # left side moves
+            i = column - 1
+            tS = row - 1
+            bS = row + 1
+            while i >= 0 and tS >= 0:
+                # top side
+                if self.board[tS][i][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (tS, i), gameState()))
+                    if self.board[tS][i][0] == 'w':
+                        break
+                i -= 1
+                tS -= 1
+            i = column - 1
+            while i >= 0 and bS <= len(self.board) - 1:
+                # top side
+                if self.board[bS][i][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (bS, i), gameState()))
+                    if self.board[bS][i][0] == 'w':
+                        break
+                i -= 1
+                bS += 1
+            # right side
+            i = column + 1
+            bS = row + 1
+            while i <= len(self.board) - 1 and bS <= len(self.board) - 1:
+                # bot side
+                if self.board[bS][i][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (bS, i), gameState()))
+                    if self.board[bS][i][0] == 'w':
+                        break
+                i += 1
+                bS += 1
+            i = column + 1
+            tS = row - 1
+            while i <= len(self.board) - 1 and tS >= 0:
+                # top side
+                if self.board[tS][i][0] == 'b':
+                    break
+                else:
+                    self.moves.append(move((row, column), (tS, i), gameState()))
+                    if self.board[tS][i][0] == 'w':
+                        break
+                i += 1
+                tS -= 1
     def getKingMove(self, row, column):
         pass
     def getQueenMove(self, row, column):
-        pass
+        self.getStraightMove(row, column, len(self.board)-1)
+        self.getBishopMove(row, column)
 class move():
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {i: j for j, i in ranksToRows.items()}
