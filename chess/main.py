@@ -90,7 +90,6 @@ def drawBoard(screen):
             squareColor = colors[((row + column) % 2)]
             p.draw.rect(screen, squareColor, p.Rect(column * SQUARESIZE, row * SQUARESIZE, SQUARESIZE, SQUARESIZE))
 
-
 def drawPieces(screen, gs):
     for row in range(DIMENSION):
         for column in range(DIMENSION):

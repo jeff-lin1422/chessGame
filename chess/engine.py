@@ -3,15 +3,17 @@ class gameState():
         #a 2d array representing the board
         self.board = [["bR","bN","bB","bQ","bK","bB","bN","bR"],
                       ["bP","bP","bP","bP","bP","bP","bP","bP"],
-                      ["--","--","--","--","--","--","wP","--"],
                       ["--","--","--","--","--","--","--","--"],
                       ["--","--","--","--","--","--","--","--"],
-                      ["--","bP","--","--","--","--","--","--"],
+                      ["--","--","--","--","--","--","--","--"],
+                      ["--","--","--","--","--","--","--","--"],
                       ["wP","wP","wP","wP","wP","wP","wP","wP"],
                       ["wR","wN","wB","wQ","wK","wB","wN","wR"],
         ]
         self.whiteToMove = True
         self.moveLog = []
+        self.getMoves = {'P': self.getPawnMove, 'R': self.getRookMove, 'N': self.getKnightMove, 'B': self.getBishopMove,
+                         'K': self.getKingMove, 'Q': self.getQueenMove}
     def makeMove(self, move):
         # take in the move object
         self.board[move.startRow][move.startCol] = "--"
@@ -35,18 +37,7 @@ class gameState():
                 color = self.board[row][column][0]
                 if (color == 'w' and self.whiteToMove) or (color == 'b' and not self.whiteToMove):
                     piece = self.board[row][column][1]
-                    if piece == 'P':
-                        self.getPawnMove(row, column)
-                    elif piece == 'R':
-                        pass
-                    elif piece == 'N':
-                        pass
-                    elif piece == 'B':
-                        pass
-                    elif piece == 'Q':
-                        pass
-                    elif piece == 'K':
-                        pass
+                    self.getMoves[piece](row, column)
         return self.moves
     def getPawnMove(self, row, column):
         if self.whiteToMove:
@@ -81,6 +72,16 @@ class gameState():
                 if self.board[row+1][column+1][0] == 'w':
                     self.moves.append(move((row, column), (row+1, column+1), gameState()))
                 # do en passant
+    def getRookMove(self, row, column):
+        pass
+    def getKnightMove(self, row, column):
+        pass
+    def getBishopMove(self, row, column):
+        pass
+    def getKingMove(self, row, column):
+        pass
+    def getQueenMove(self, row, column):
+        pass
 class move():
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {i: j for j, i in ranksToRows.items()}
