@@ -5,7 +5,7 @@ class gameState():
                       ["bP","bP","bP","bP","bP","bP","bP","bP"],
                       ["--","--","--","--","--","--","--","bR"],
                       ["--","--","--","--","--","--","--","--"],
-                      ["--","--","--","--","--","--","--","--"],
+                      ["--","--","wB","--","--","--","--","--"],
                       ["wR","--","--","--","--","--","--","--"],
                       ["wP","wP","wP","wP","wP","wP","wP","wP"],
                       ["wR","wN","wB","wQ","wK","wB","wN","wR"],
@@ -156,12 +156,63 @@ class gameState():
                         break
                 i -= 1
     def getRookMove(self, row, column):
+        # the third parameter mainly used in case user wants to modify the size of the board
         self.getStraightMove(row, column, len(self.board)-1)
 
     def getKnightMove(self, row, column):
         pass
     def getBishopMove(self, row, column):
-        pass
+        if self.whiteToMove:
+            # left side moves
+            i = column-1
+            tS = row-1
+            bS = row+1
+            while i >= 0 and tS >= 0:
+                # top side
+                if self.board[tS][i][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (tS, i), gameState()))
+                    if self.board[tS][i][0] == 'b':
+                        break
+                i -= 1
+                tS -= 1
+            i = column - 1
+            while i >= 0 and bS <= len(self.board)-1:
+                # top side
+                if self.board[bS][i][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (bS, i), gameState()))
+                    if self.board[bS][i][0] == 'b':
+                        break
+                i -= 1
+                bS += 1
+            # right side
+            i = column + 1
+            bS = row + 1
+            while i <= len(self.board)-1 and bS <= len(self.board)-1:
+                # bot side
+                if self.board[bS][i][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (bS, i), gameState()))
+                    if self.board[bS][i][0] == 'b':
+                        break
+                i += 1
+                bS += 1
+            i = column + 1
+            tS = row - 1
+            while i <= len(self.board)-1 and tS >= 0:
+                # top side
+                if self.board[tS][i][0] == 'w':
+                    break
+                else:
+                    self.moves.append(move((row, column), (tS, i), gameState()))
+                    if self.board[tS][i][0] == 'b':
+                        break
+                i += 1
+                tS -= 1
     def getKingMove(self, row, column):
         pass
     def getQueenMove(self, row, column):

@@ -11,7 +11,6 @@ p.init()
 because loading images everytime can be expensive, use dictionary to load them in all at first
 """
 
-
 def loadImages():
     pieces = ["wP", "wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR", "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR",
               "bP"]
