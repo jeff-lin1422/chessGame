@@ -67,6 +67,7 @@ def main():
                     gs.undoMove()
                     validMoves = gs.validMoves()
                     moveMade = True
+                    gs.whiteToMove = not gs.whiteToMove
         if moveMade:
             validMoves = gs.validMoves()
             moveMade = False

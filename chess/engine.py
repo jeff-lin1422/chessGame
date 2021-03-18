@@ -3,14 +3,14 @@ class gameState():
         #a 2d array representing the board
         self.board = [["bR","bN","bB","bQ","bK","bB","bN","bR"],
                       ["bP","bP","bP","bP","bP","bP","bP","bP"],
+                      ["--","--","--","--","--","--","wP","--"],
                       ["--","--","--","--","--","--","--","--"],
                       ["--","--","--","--","--","--","--","--"],
-                      ["--","--","--","--","--","--","--","--"],
-                      ["--","--","--","--","--","--","--","--"],
+                      ["--","bP","--","--","--","--","--","--"],
                       ["wP","wP","wP","wP","wP","wP","wP","wP"],
                       ["wR","wN","wB","wQ","wK","wB","wN","wR"],
         ]
-        self.whiteToMove = True;
+        self.whiteToMove = True
         self.moveLog = []
     def makeMove(self, move):
         # take in the move object
@@ -29,14 +29,14 @@ class gameState():
         return self.allPossibleMoves()
 
     def allPossibleMoves(self):
-        moves = [move((6,4),(4,4),gameState())]
+        self.moves = []
         for row in range(len(self.board)):
             for column in range(len(self.board[row])):
                 color = self.board[row][column][0]
                 if (color == 'w' and self.whiteToMove) or (color == 'b' and not self.whiteToMove):
                     piece = self.board[row][column][1]
                     if piece == 'P':
-                        pass
+                        self.getPawnMove(row, column)
                     elif piece == 'R':
                         pass
                     elif piece == 'N':
@@ -47,7 +47,40 @@ class gameState():
                         pass
                     elif piece == 'K':
                         pass
-        return moves
+        return self.moves
+    def getPawnMove(self, row, column):
+        if self.whiteToMove:
+            if self.board[row-1][column] == "--":
+                self.moves.append(move((row,column), (row-1, column), gameState()))
+                # need to check for the first pawn move
+                if row == 6 and self.board[row-2][column] == "--":
+                    self.moves.append(move((row, column), (row-2, column), gameState()))
+            # captures
+            if column-1 >= 0:
+                # left capture
+                if self.board[row-1][column-1][0] == 'b':
+                    self.moves.append(move((row, column), (row-1, column-1), gameState()))
+            if column+1 <= 7:
+                # right capture
+                if self.board[row-1][column+1][0] == 'b':
+                    self.moves.append(move((row, column), (row-1, column+1), gameState()))
+                # do en passant
+        else:
+            if self.board[row+1][column] == "--":
+                self.moves.append(move((row,column), (row+1, column), gameState()))
+                # need to check for the first pawn move
+                if row == 1 and self.board[row+2][column] == "--":
+                    self.moves.append(move((row, column), (row+2, column), gameState()))
+            # captures
+            if column-1 >= 0:
+                # left capture
+                if self.board[row+1][column-1][0] == 'w':
+                    self.moves.append(move((row, column), (row+1, column-1), gameState()))
+            # right capture
+            if column+1 <= 7:
+                if self.board[row+1][column+1][0] == 'w':
+                    self.moves.append(move((row, column), (row+1, column+1), gameState()))
+                # do en passant
 class move():
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {i: j for j, i in ranksToRows.items()}
